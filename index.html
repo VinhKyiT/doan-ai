@@ -8,9 +8,9 @@
     <body class="body">
         <div class="container">
             <div class="header_text">Nhận diện biểu cảm khuôn mặt</div>
-            <button class="bttn-unite bttn-md bttn-primary" type="button" onclick="init()">Start</button>
-            <div id="webcam-container camcss"></div>
-            <div id="label-container"></div>
+            <button id="startBtn" class="bttn-unite bttn-md bttn-primary" type="button" onclick="init()">Start</button>
+            <div id="webcam-container" class="cam_css"></div>
+            <div id="label-container" class="label_css"></div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
@@ -22,11 +22,12 @@
     // the link to your model provided by Teachable Machine export panel
     const URL = "https://teachablemachine.withgoogle.com/models/zXDl8gjGg/";
 
-    let model, webcam, labelContainer, maxPredictions;
+    let model, webcam, labelContainer, maxPredictions, startBtn;
     let lastLabel = '';
 
     // Load the image model and setup the webcam
     async function init() {
+        document.getElementById("startBtn").disabled = true;
         const modelURL = URL + "model.json";
         const metadataURL = URL + "metadata.json";
 
@@ -43,11 +44,9 @@
         await webcam.setup(); // request access to the webcam
         await webcam.play();
         window.requestAnimationFrame(loop);
-
         // append elements to the DOM
         document.getElementById("webcam-container").appendChild(webcam.canvas);
         labelContainer = document.getElementById("label-container");
-
     }
 
     async function loop() {
